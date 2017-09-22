@@ -1,0 +1,87 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function tasks_schema() {
+
+
+    $schema = array();
+
+    $schema['tasks_project'] = array(
+        'description' => "Table for the project tasks",
+        'fields' => array(
+            'tid' => array(
+                'description' => "Key of the task",
+                 'type' => 'serial',
+                 'unsigned' => TRUE,
+                 'not null' => TRUE
+            ),
+            'uid' => array(
+                'description' => "User id",
+                'type'=> 'int',
+                'foreign-key' => array(
+                        'table' => 'users',
+                        'column' => 'uid'
+                ),
+                'not null' => FALSE,
+                'default' => NULL,
+
+            ),
+            'nid' => array(
+                'description' => "Project id",
+                'type' => 'int',
+                'foreign-key' => array(
+                      'table' => 'node',
+                      'column' => 'nid'
+                 ),
+                'not null' => TRUE,
+            ),
+            'start_date' => array(
+                'type'=> 'int',
+//                'mysql_type' => 'DATETIME',
+                'not null' => TRUE,
+            ),
+            'end_date' => array(
+                'type' => 'int',
+//                'mysql_type' => 'DATETIME',
+                'not null' => TRUE,
+            ),
+            'task_date'=> array(
+                'type' => 'int',
+                'not null' => TRUE,
+            ),
+            'created' => array(
+                 'type' => 'int',
+                 'not null' => TRUE,
+            ),
+            'updated' => array(
+                  'type' => 'int',
+                  'not null' => FALSE,
+            ),
+            'approval' => array(
+                'type' => 'int',
+                'size' => 'tiny',
+            ),
+            'task_description' => array(
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => FALSE,
+//                'default' => NULL
+            ),
+            'details' => array(
+                'type' => 'text',
+                'not null' => FALSE,
+//                'default' => NULL
+            ),
+            'time_spent' => array(
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => FALSE,
+//                'default' => NULL
+            )
+        ),
+        'primary key' => array('tid'),
+    );
+    return $schema;
+}

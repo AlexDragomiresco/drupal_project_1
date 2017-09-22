@@ -1,0 +1,11 @@
+--- a/gmap.module
++++ b/gmap.module
+@@ -497,7 +497,7 @@ function gmap_regenerate_markers() {
+   $contents .= "Drupal.gmap = Drupal.gmap || {};\n";
+   $contents .= "Drupal.gmap.icondata = " . drupal_json_encode(gmap_get_icondata(TRUE)) . ";\n";
+ 
+-  $dir = 'public://js/';
++  $dir = drupal_realpath("public://js/");
+   $filepath = $dir . 'gmap_markers.js';
+   // Make sure js/ exists in the files folder.
+   if (file_prepare_directory($dir, FILE_CREATE_DIRECTORY)) {

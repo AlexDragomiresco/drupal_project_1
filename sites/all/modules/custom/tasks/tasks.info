@@ -1,0 +1,4 @@
+name = Tasks
+description = This module allows you to work with different tasks.
+core = 7.x
+dependencies[] = entity

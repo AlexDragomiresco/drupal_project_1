@@ -1,0 +1,144 @@
+<?php
+
+module_load_include('inc', 'tasks', 'includes/tasks.form');
+module_load_include('inc','tasks','includes/tasks.info');
+
+function tasks_entity_info() {
+
+    $info = array();
+
+   $info['tasks'] = array(
+        'label' => t('Tasks'),
+        'base table' => 'tasks_project',
+        'entity keys' => array(
+          'id' => 'tid',
+          'label' => 'tasks_description',
+    ),
+     'access callback' => 'tasks_access_callback',
+     'uri callback' => 'entity_class_uri',
+     'admin ui' => array(
+       'path' => 'tasks',
+       'controller class' => 'EntityDefaultUIController',
+     ),
+     'fieldable' => TRUE,
+     'bundles' => array(
+       'tasks' => array(
+         'label' => t('Tasks'),
+         'admin' => array(
+           'path' => 'tasks',
+         ),
+       ),
+     ),
+     'entity class' => 'Entity',
+     'controller class' => 'EntityAPIController',
+     'views controller class' => 'EntityDefaultViewsController',
+     'module' => 'tasks',
+    );
+
+return $info;
+}
+
+/*function tasks_projects() {
+
+
+  $tasks = entity_load('tasks', array(1,2,3));
+
+  // Saving new entities
+  if (!isset($tasks[1])) {
+    $entity = entity_create('tasks', []);
+    $entity->uid = 10;
+    $entity->nid = 20;
+    $entity->start_date = 30;
+    $entity->end_date = 40;
+    $entity->created = 50;
+    $entity->updated = 60;
+    $entity->approval = 70;
+    $entity->task_description = t('task test test');
+    entity_save('tasks', $entity);
+  }
+  //dpm($tasks);
+  return "end of test";
+}*/
+
+function tasks_access_callback($op, $tasks = NULL, $account = NULL) {
+  if ($op == 'view' || $op == 'update' || $op == 'create' || $op == 'delete') {
+    return TRUE;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+function tasks_view_project($tid) {
+
+  $tasks = entity_load('tasks', array($tid));
+  $task = $tasks[$tid];
+
+  drupal_set_title($task->tid);
+  $output = entity_view('tasks', array($task));
+
+  return $output;
+
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function tasks_views_api()
+{
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'tasks') . '/views',
+  );
+}
+
+/** 
+ * Implements hook_field_formatter_info()
+ */
+
+//function tasks_field_formatter_info()
+//{
+//  return array(
+//    tasks_status_formatter => array(
+//      'label' => t("Task status"),
+//      'field types' =>array('number_integer'),
+//    ),
+//  );
+//}
+
+/**
+ * Implements hook_field_formatter_view()
+ */
+
+//function tasks_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display, $tasks) 
+//{
+//    $element = array();
+//    $settings = $display['settings'];
+//    
+//    if ($display['type'] == 'tasks_status_formatter') {
+//    switch($tasks['approval']){
+//    case 1:
+//    foreach ($tasks as $delta => $task) {
+//      $element[$delta] = array(
+//      '#type' => 'markup',
+//      '#markup' => $task['value'] == 'Approved',
+//      );
+//    }
+//    case -1:
+//    foreach ($tasks as $delta => $task) {
+//      $element[$delta] = array(
+//      '#type' => 'markup',
+//      '#markup' => $task['value'] == 'Declined',
+//      );
+//    }
+//    case 0:
+//    foreach ($tasks as $delta => $task) {
+//      $element[$delta] = array(
+//      '#type' => 'markup',
+//      '#markup' => $task['value'] == 'Pending',
+//      );
+//    }
+//  }
+//  }  
+//}
+
